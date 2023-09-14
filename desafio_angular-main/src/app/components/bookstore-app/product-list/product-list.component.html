@@ -1,0 +1,54 @@
+<div class="card">
+    <p-dataView #dv [value]="books" [paginator]="true" [rows]="8" filterBy="name"
+                [sortField]="sortField" [sortOrder]="sortOrder" >
+        <ng-template pTemplate="header">
+            <div class="flex flex-column md:flex-row md:justify-content-between">
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Price" (onChange)="onSortChange($event)" [style]="{'min-width':'15em'}"></p-dropdown>
+                <span class="p-input-icon-left mb-2 md:mb-0">
+                    <input type="search" pInputText placeholder="Search by name" (input)="dv.filter($any($event.target).value, 'contains')" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template let-book pTemplate="listItem">
+            <div class="col-3">
+                <div class="book-list-item">
+                    <img [src]="'assets/img/' + book.img + '.jpg'" [alt]="book.name" width="200" height="160"/>
+                    <div class="book-list-detail">
+                        <div class="book-name">{{book.name}}</div>
+                        <div class="book-description">{{book.description}}</div>
+                        <p-rating [ngModel]="book.rating" [readonly]="true" [cancel]="false"></p-rating>
+                        <i class="pi pi-tag book-category-icon"></i><span class="book-category">{{book.category}}</span>
+                    </div>
+                    <div class="book-list-action">
+                        <span class="book-price">${{book.price}}</span>
+                        <p-button icon="pi pi-shopping-cart" label="Add to Cart" [disabled]="book.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                    </div>
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template let-book pTemplate="gridItem">
+            <div class="col-12 md:col-4">
+                <div class="book-grid-item card">
+                    <div class="book-grid-item-top">
+                        <div>
+                            <i class="pi pi-tag book-category-icon"></i>
+                            <span class="book-category">{{book.category}}</span>
+                        </div>
+                        <span [class]="'book-badge status-' + book.inventoryStatus.toLowerCase()">{{book.inventoryStatus}}</span>
+                    </div>
+                    <div class="book-grid-item-content">
+                        <img [src]="'assets/showcase/images/demo/book/' + book.image" [alt]="book.name"/>
+                        <div class="book-name">{{book.name}}</div>
+                        <div class="book-description">{{book.description}}</div>
+                        <p-rating [ngModel]="book.rating" [readonly]="true" [cancel]="false"></p-rating>
+                    </div>
+                    <div class="book-grid-item-bottom">
+                        <span class="book-price">${{book.price}}</span>
+                        <p-button icon="pi pi-shopping-cart" [disabled]="book.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
